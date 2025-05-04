@@ -1,2 +1,2 @@
-//GENERATED BARREL FILE 
-export 'hive_store.dart'; 
+//GENERATED BARREL FILE
+export 'hive_store.dart';

@@ -1,16 +1,16 @@
-import 'package:cache_manager_plus/cache_manager_plus.dart'
-    hide CacheManagerUtils;
+import 'package:cache_manager_plus/cache_manager_plus.dart';
 import 'package:cache_manager_plus_utils/cache_manager_plus_utils.dart';
 import 'package:test/expect.dart';
 import 'package:test/scaffolding.dart';
 
 void main() {
+  final storePath = const bool.fromEnvironment('CI_TEST')
+      ? '/Users/runner/work/cache_manager/'
+      : '/Users/sebastine/Desktop/CacheManagerPlusTest';
+
   group('Hive cache store test suite', () {
     setUp(() async {
-      await CacheManager.init(
-        store: HiveCacheStore(
-            path: '/Users/sebastine/Desktop/CacheManagerPlusTest'),
-      );
+      await CacheManager.init(store: HiveCacheStore(path: storePath));
     });
 
     tearDown(() {

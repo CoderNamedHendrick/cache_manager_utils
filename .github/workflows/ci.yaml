@@ -1,0 +1,51 @@
+name: CI pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  flutter_version: 3.29.3
+
+jobs:
+  run-tests-and-upload-coverage-report:
+    name: Test package
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          cache: true
+          flutter-version: '3.29.3'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - run: dart pub global activate coverage
+        name: Activate dart coverage
+
+      - name: Format code
+        run: dart format . --set-exit-if-changed
+
+      - name: Lint analysis
+        run: dart analyze
+
+      - name: Run tests and generate coverage
+        run: |
+          dart run --define=CI_TEST=true --pause-isolates-on-exit --disable-service-auth-codes --enable-vm-service=8181 test --use-data-isolate-strategy &
+          dart pub global run coverage:collect_coverage --wait-paused --uri=http://127.0.0.1:8181/ -o coverage/coverage.json --resume-isolates --scope-output=foo
+          dart pub global run coverage:format_coverage --packages=.dart_tool/package_config.json --lcov -i coverage/coverage.json -o coverage/lcov.info
+
+      - name: Upload coverage to codecov
+        uses: codecov/codecov-action@v5
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
