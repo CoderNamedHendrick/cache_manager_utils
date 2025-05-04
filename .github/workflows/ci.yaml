@@ -47,7 +47,7 @@ jobs:
 
       - name: Run tests and generate coverage
         run: |
-          dart run --define=CI_TEST=true --use-data-isolate-strategy --pause-isolates-on-exit --disable-service-auth-codes --enable-vm-service=8181 test &
+          dart run --define=CI_TEST=true --pause-isolates-on-exit --disable-service-auth-codes --enable-vm-service=8181 test --use-data-isolate-strategy &
           dart pub global run coverage:collect_coverage --wait-paused --uri=http://127.0.0.1:8181/ -o coverage/coverage.json --resume-isolates --scope-output=foo
           dart pub global run coverage:formate_coverage --packages=.dart_tool/package_config.json --lcov -i coverage/coverage.json -o coverage/lcov.info
 
