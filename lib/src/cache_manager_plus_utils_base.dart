@@ -3,7 +3,9 @@
 /// [composeKeyFromUrl] being used to compose a [CacheItem] key from a
 /// given url
 final class CacheManagerUtils {
+  //coverage:ignore-start
   const CacheManagerUtils._();
+  //coverage:ignore-end
 
   /// returns key intended to be used as a [CacheItem] key from a http url,
   /// it takes the url [path], a [requestMethod] and an optional [queryParams]

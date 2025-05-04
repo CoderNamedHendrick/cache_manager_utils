@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cache_manager_plus/cache_manager_plus.dart';
 import 'package:hive_ce/hive.dart';
 
@@ -84,5 +86,10 @@ final class HiveCacheStore implements CacheStore {
   @override
   Future<void> saveCacheItem(CacheItem item) async {
     return await _store.put(item.key, item.toCacheEntryString());
+  }
+
+  @override
+  FutureOr<void> close() async {
+    await _store.close();
   }
 }

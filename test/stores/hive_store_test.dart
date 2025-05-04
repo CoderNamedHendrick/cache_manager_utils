@@ -18,8 +18,7 @@ void main() {
     });
 
     test('hive cache store hello world test', () async {
-      await CacheManager.instance
-          .set(CacheItem.ephemeral(key: 'k', data: 'Hello world'));
+      await CacheManager.instance.set(CacheItem.ephemeral(key: 'k', data: 'Hello world'));
 
       final item = await CacheManager.instance.get('k');
       expect(item?.data, 'Hello world');
@@ -36,11 +35,47 @@ void main() {
 
       expect(key, 'get:https://test-url-path.com?user=doe&key=test-key');
 
-      await CacheManager.instance
-          .set(CacheItem.ephemeral(key: key, data: 'user-id=doe'));
+      await CacheManager.instance.set(CacheItem.ephemeral(key: key, data: 'user-id=doe'));
 
       final item = await CacheManager.instance.get(key);
       expect(item?.data, 'user-id=doe');
+    });
+
+    test('cache store operations', () async {
+      expect(await CacheManager.instance.cacheVersion(), -1);
+
+      await CacheManager.instance.updateCacheVersion(1);
+
+      expect(await CacheManager.instance.cacheVersion(), 1);
+
+      await CacheManager.instance.set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+
+      expect(CacheManager.instance.contains('test-key'), true);
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
+
+      await CacheManager.instance.invalidateCacheItem('test-key');
+
+      expect(CacheManager.instance.contains('test-key'), true);
+      expect(await CacheManager.instance.isCacheItemExpired('test-key'), true);
+
+      await CacheManager.instance.invalidateCache();
+
+      expect(CacheManager.instance.contains('test-key'), false);
+    });
+
+    test('close store verification', () async {
+      await CacheManager.instance.set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+
+      expect(CacheManager.instance.contains('test-key'), true);
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
+
+      await CacheManager.close();
+
+      await CacheManager.init(store: HiveCacheStore(path: storePath));
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
     });
   });
 }
