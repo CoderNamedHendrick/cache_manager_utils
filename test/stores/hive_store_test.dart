@@ -5,7 +5,7 @@ import 'package:test/scaffolding.dart';
 
 void main() {
   final storePath = const bool.fromEnvironment('CI_TEST')
-      ? '/Users/runner/work/cache_manager/'
+      ? '/Users/runner/work/cache_manager/CacheManagerPlusTest'
       : '/Users/sebastine/Desktop/CacheManagerPlusTest';
 
   group('Hive cache store test suite', () {
