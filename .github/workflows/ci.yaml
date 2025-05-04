@@ -42,8 +42,8 @@ jobs:
         run: |
           dart run --define=CI_TEST=true test --use-data-isolate-strategy --coverage=./coverage
           dart pub global run coverage:format_coverage --packages=.dart_tool/package_config.json --report-on=lib --lcov -o ./coverage/lcov.info -i ./coverage
-          rm coverage/test
-          rm /Users/runner/work/cache_manager/CacheManagerPlusTest
+          rm -rf coverage/test
+          rm -rf /Users/runner/work/cache_manager/CacheManagerPlusTest
 
       - name: Upload coverage to codecov
         uses: codecov/codecov-action@v5
