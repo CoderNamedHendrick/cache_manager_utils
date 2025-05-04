@@ -42,5 +42,44 @@ void main() {
       final item = await CacheManager.instance.get(key);
       expect(item?.data, 'user-id=doe');
     });
+
+    test('cache store operations', () async {
+      expect(await CacheManager.instance.cacheVersion(), -1);
+
+      await CacheManager.instance.updateCacheVersion(1);
+
+      expect(await CacheManager.instance.cacheVersion(), 1);
+
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+
+      expect(CacheManager.instance.contains('test-key'), true);
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
+
+      await CacheManager.instance.invalidateCacheItem('test-key');
+
+      expect(CacheManager.instance.contains('test-key'), true);
+      expect(await CacheManager.instance.isCacheItemExpired('test-key'), true);
+
+      await CacheManager.instance.invalidateCache();
+
+      expect(CacheManager.instance.contains('test-key'), false);
+    });
+
+    test('close store verification', () async {
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+
+      expect(CacheManager.instance.contains('test-key'), true);
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
+
+      await CacheManager.close();
+
+      await CacheManager.init(store: HiveCacheStore(path: storePath));
+
+      expect((await CacheManager.instance.get('test-key'))?.data, 'Hello Test');
+    });
   });
 }
