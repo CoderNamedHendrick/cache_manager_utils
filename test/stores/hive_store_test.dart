@@ -13,8 +13,8 @@ void main() {
       await CacheManager.init(store: HiveCacheStore(path: storePath));
     });
 
-    tearDown(() {
-      CacheManager.close();
+    tearDown(() async {
+      await CacheManager.close();
     });
 
     test('hive cache store hello world test', () async {
