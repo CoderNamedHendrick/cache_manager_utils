@@ -18,7 +18,8 @@ void main() {
     });
 
     test('hive cache store hello world test', () async {
-      await CacheManager.instance.set(CacheItem.ephemeral(key: 'k', data: 'Hello world'));
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: 'k', data: 'Hello world'));
 
       final item = await CacheManager.instance.get('k');
       expect(item?.data, 'Hello world');
@@ -35,7 +36,8 @@ void main() {
 
       expect(key, 'get:https://test-url-path.com?user=doe&key=test-key');
 
-      await CacheManager.instance.set(CacheItem.ephemeral(key: key, data: 'user-id=doe'));
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: key, data: 'user-id=doe'));
 
       final item = await CacheManager.instance.get(key);
       expect(item?.data, 'user-id=doe');
@@ -48,7 +50,8 @@ void main() {
 
       expect(await CacheManager.instance.cacheVersion(), 1);
 
-      await CacheManager.instance.set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
 
       expect(CacheManager.instance.contains('test-key'), true);
 
@@ -65,7 +68,8 @@ void main() {
     });
 
     test('close store verification', () async {
-      await CacheManager.instance.set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
+      await CacheManager.instance
+          .set(CacheItem.ephemeral(key: 'test-key', data: 'Hello Test'));
 
       expect(CacheManager.instance.contains('test-key'), true);
 
