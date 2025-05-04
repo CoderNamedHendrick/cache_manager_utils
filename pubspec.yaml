@@ -1,6 +1,6 @@
 name: cache_manager_plus_utils
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: Utility package for cache manager plus.
+version: 1.0.1
 homepage: https://github.com/CoderNamedHendrick/cache_manager_utils
 repository: https://github.com/CoderNamedHendrick/cache_manager_utils
 issue_tracker: https://github.com/CoderNamedHendrick/cache_manager_utils/issues
@@ -15,7 +15,7 @@ environment:
 
 
 dependencies:
-  cache_manager_plus: ^1.0.1
+  cache_manager_plus: ^1.0.2
   hive_ce: ^2.11.1
 
 dev_dependencies:
